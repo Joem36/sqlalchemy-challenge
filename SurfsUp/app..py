@@ -63,14 +63,18 @@ def precipitation():
     prcp_data = session.query(hawaii_measurement.date, hawaii_measurement.prcp).filter(hawaii_measurement.date >= date_prev_year()).all()
     
     # Close the session                   
-    session.close()
-    prcp = []
-    for date, prcp in prcp_data:
-        prcp_data = {}
-        prcp_data["date"] = date
-        prcp_data["prcp"] = prcp
-        prcp.append(prcp_data)
+    #session.close()
+    #prcp = []
+    #for date, prcp in prcp_data:
+       # prcp_data = {}
+        #prcp_data["date"] = date
+        #prcp_data["prcp"] = prcp
+        #prcp.append(prcp_data)
 
+    precip_year = dt.date(2017, 8, 23) - dt.timedelta(days=365)
+    precip_results = session.query(hawaii_measurement.date, hawaii_measurement.prcp).filter(hawaii_measurement.date >= precip_year).all()
+    precip = {date: prcp for date, prcp in precip_results}
+    return jsonify(precip)
 
 
 @app.route("/api/v1.0/stations")
